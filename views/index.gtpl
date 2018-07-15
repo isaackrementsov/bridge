@@ -52,7 +52,7 @@
             <p style="width:50vw">Whatever you need, Bridge has it. 
                 With a continuously expanding selection of backend tools surrounding a 
                 core feature set, you can simply plug scripts in and play. Pricing is done per plugin, so you can purchase as few or as many as you desire.</p>
-            <a class="normal" href="/docs">Read the docs</a>
+            <a class="normal" href="https://isaackrementsov.github.io/bridge">Read the docs</a>
             <a href="/signup" class="button ctainverse">Let's go!</a>
         </div>
         <script src="/assets/js/scripts.js"></script>

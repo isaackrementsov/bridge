@@ -14,7 +14,7 @@ a:visited {
 }
 .navbar {
     position: fixed;
-    top: 1vh;
+    top: 0;
     list-style-type: none;
     margin: 0;
     padding: 2vh 1.5vw;
@@ -150,4 +150,53 @@ h1 {
     border-color: #2196F3;
     background-color: #2196F3;
     color: white;
+}
+.content {
+    position: absolute;
+    top: 18vh;
+    padding: 1vh 2vw;
+    color: grey;
+}
+.input {
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    padding: 1.2vh 1vw;
+    margin: 2vh 0;
+}
+form input {
+    display: block;
+}
+.form {
+    position: absolute;
+    left: 15vw;
+    background-color: white;
+    width: 70vw;
+    height: 60vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+.big {
+    font-size: 1.2vw;
+}
+.signup {
+    padding: 0 2vw;
+}
+.loginquestion {
+    background-color: #42A5F5;
+    color: white;
+    position: relative;
+    top: 0;
+    height: 56vh;   
+    width: 33vw;
+    vertical-align: top;
+    padding: 2vh 3vw;
+}
+.content h2 {
+    font-weight: 300;
+}
+.formimg {
+    height: 33vh;
+    position: relative;
 }
