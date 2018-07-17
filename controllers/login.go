@@ -10,7 +10,7 @@ type Login struct {
 	baseController
 }
 func(l Login) Get(w http.ResponseWriter, r *http.Request){
-	t, _ := template.ParseFiles("../src/bridge/views/login.gtpl")
+	t, _ := template.ParseFiles(viewDir + "login.gtpl")
 	t.Execute(w, nil)
 }
 func(l Login) Post(w http.ResponseWriter, r *http.Request){
@@ -23,7 +23,9 @@ func(l Login) Post(w http.ResponseWriter, r *http.Request){
 	}else{
 		url = "/home"
 		userSession := sessions.Session{sessions.UserSession{user}}
-		redisInstance.Set(user.Username, userSession)
+		SessionInstance.Set(user.Username, userSession)
+		uid := http.Cookie{Name:"username", Value:user.Username, Expires:getCookieExpiration()}
+		http.SetCookie(w, &uid)
 	}
 	http.Redirect(w, r, url, 302)
 }

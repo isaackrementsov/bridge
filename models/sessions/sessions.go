@@ -7,18 +7,17 @@ import (
 type Session struct { 
     NoMethods
 }
-type RedisStore struct {
+type SessionStore struct {
 	Client *redis.Client
 }
 type NoMethods interface { }
-func NewMemoryStore() RedisStore {
+func NewMemoryStore() SessionStore {
 	client := redis.NewClient(&redis.Options{Addr: "localhost:6379", Password: "", DB: 0})
 	_, err := client.Ping().Result()
 	utils.CheckErr("Error connecting to redis:", err)
-	return RedisStore{client}
+	return SessionStore{client}
 }
-func(r RedisStore) Get(id string) (Session, error){
-    var session Session
+func(r SessionStore) Get(session Session, id string) (Session, error){
     bson, err := r.Client.Get(id).Bytes()
     if err != nil {
         return session, err
@@ -28,7 +27,7 @@ func(r RedisStore) Get(id string) (Session, error){
     }
     return session, nil
 }
-func(r RedisStore) Set(id string, s Session) error {
+func(r SessionStore) Set(id string, s Session) error {
 	bson, err := json.Marshal(s)
     if err != nil {
         return err

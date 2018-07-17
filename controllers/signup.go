@@ -9,7 +9,7 @@ type SignUp struct {
 	baseController
 }
 func(s SignUp) Get(w http.ResponseWriter, r *http.Request){
-	t, _ := template.ParseFiles("../src/bridge/views/signup.gtpl")
+	t, _ := template.ParseFiles(viewDir + "signup.gtpl")
 	t.Execute(w, nil)
 }
 func(s SignUp) Post(w http.ResponseWriter, r *http.Request){
