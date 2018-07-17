@@ -7,6 +7,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"bridge/utils"
 	"bridge/models"
+	"github.com/gorilla/sessions"
 )
 type Login struct { 
 	baseController
