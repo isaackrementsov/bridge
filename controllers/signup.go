@@ -6,7 +6,6 @@ import (
 	"bridge/utils"
 	"bridge/models"
 	"strings"
-	"github.com/gorilla/sessions"
 )
 type SignUp struct { 
 	baseController

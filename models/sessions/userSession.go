@@ -1,5 +1,5 @@
 package sessions
+import "bridge/models"
 type UserSession struct {
-	Session
-	Username string
+	models.User
 }

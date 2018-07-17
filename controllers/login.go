@@ -7,7 +7,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"bridge/utils"
 	"bridge/models"
-	"github.com/gorilla/sessions"
+	"bridge/models/sessions"
 )
 type Login struct { 
 	baseController
@@ -24,9 +24,13 @@ func(l Login) Post(w http.ResponseWriter, r *http.Request){
 	user := models.User{}
 	r.ParseForm()
 	notFound := users.Find(bson.M{"username":strings.Join(r.Form["username"], ""), "password":strings.Join(r.Form["password"], "")}).One(&user)
-	url := "/home"
+	var url string
 	if notFound != nil {
 		url = "/login"
+	}else{
+		url = "/home"
+		userSession := sessions.Session{sessions.UserSession{user}}
+		redisInstance.Set(user.Username, userSession)
 	}
 	http.Redirect(w, r, url, 302)
 }
