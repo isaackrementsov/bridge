@@ -14,11 +14,11 @@ func(s SignUp) Get(w http.ResponseWriter, r *http.Request){
 }
 func(s SignUp) Post(w http.ResponseWriter, r *http.Request){
 	r.ParseForm()
-	user := models.User{models.Model{}, strings.Join(r.Form["username"], ""), strings.Join(r.Form["password"], ""), strings.Join(r.Form["email"], "")}
+	user := models.User{strings.Join(r.Form["username"], ""), strings.Join(r.Form["password"], ""), strings.Join(r.Form["email"], "")}
 	notUnique := user.SignUp()
 	if notUnique != nil {
 		http.Redirect(w, r, "/signup", 302)
 	}else{
-		Index{}.Post(w, r)
+		Login{}.Post(w, r)
 	}
 }

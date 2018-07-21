@@ -6,7 +6,6 @@ import (
 	"errors"
 )
 type User struct {
-	Model
 	Username string
 	Password string
 	Email string
@@ -24,7 +23,7 @@ func(u *User) SignUp() error {
 	defer connection.Close()
 	utils.CheckErr("Error connecting to db: ", err)	
 	users := connection.DB("bridge").C("users")
-	unique := u.IsUnique("Name", "users")
+	unique := isUnique("username", u.Username, "users", u)
 	if unique {
 		err = users.Insert(&u)
 		utils.CheckErr("User insert: ", err)

@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)https://stackoverflow.com/questions/ask -->
+<html itemscope="" itemtype="http://schema.org/QAPage" class="html__responsive"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <title>GoLang Redis session map does not allow indexing - Stack Overflow</title>
+        <link rel="shortcut icon" href="https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico?v=4f32ecc8f43d">
+        <link rel="apple-touch-icon image_src" href="https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a">
+        <link rel="search" type="application/opensearchdescription+xml" title="Stack Overflow" href="https://stackoverflow.com/opensearch.xml">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
+
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://stackoverflow.com/questions/ask">
+        <meta property="og:site_name" content="Stack Overflow">
+        <meta property="og:image" itemprop="image primaryImageOfPage" content="https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:domain" content="stackoverflow.com">
+        <meta name="twitter:title" property="og:title" itemprop="title name" content="Ask a Question">
+        <meta name="twitter:description" property="og:description" itemprop="description" content="Stack Overflow | The World’s Largest Online Community for Developers">
+        <script src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/rules-p-c1rF4kxgLUzNc.js.download" async=""></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/quant.js.download"></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/beacon.js.download"></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/analytics.js.download"></script><script src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/jquery.min.js.download"></script>
+        <script src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/stub.en.js.download"></script>
+    
+    <link rel="stylesheet" type="text/css" href="./GoLang Redis session map does not allow indexing - Stack Overflow_files/stacks.css">
+        <link rel="stylesheet" type="text/css" href="./GoLang Redis session map does not allow indexing - Stack Overflow_files/primary-unified.css">
+            <link rel="stylesheet" type="text/css" href="./GoLang Redis session map does not allow indexing - Stack Overflow_files/secondary-unified.css">
+    
+    <script>
+        StackExchange.ready(
+            function () {
+
+                function showErrors() {
+                };
+
+                StackExchange.using("postValidation", function () {
+                    StackExchange.postValidation.initOnBlurAndSubmit($('#post-form'), 1, 'question', false, null, false);
+                });
+                
+                var suggestionTarget = $("#question-suggestions");
+                var titleSearchOptions = {
+                    siteName: document.title.substr(document.title.indexOf(' - ') + 3),
+                    onResults: function ($links) {
+                                   StackExchange.using('gps', function() {
+                                       StackExchange.gps.track('question_ask.suggestions_show', { });
+                                       $links.addClass('js-gps-track').data('gps-track', 'question_ask.suggestion_click');
+                                       StackExchange.gps.bindTrackClicks(suggestionTarget);
+                                   });
+                               }
+                };
+                StackExchange.question.initTitleSearch($('#title'), suggestionTarget, titleSearchOptions);
+
+                    
+                    var $answerCheckbox = $('#answer-from-ask');
+                    var editorInitialized = false;
+
+                    function showAnswerSection(quick, callback) {
+                        try
+                        {
+                            if (!editorInitialized) {
+                                //$("#question-answer-section").css("opacity", 0).removeClass("dno");
+                                $("#question-answer-section").removeClass("dno");
+                                // This line will throw an exception
+                                StackExchange.editor.finallyInit();
+                                editorInitialized = true;
+
+                                StackExchange.using("postValidation", function () {
+                                    StackExchange.postValidation.initOnBlur($("#question-answer-section"), 2, false);
+                                });
+                            }
+                            
+                            $('#question-answer-section, #answer-from-ask-form-item').fadeTo(quick ? 0 : 400, 1, callback);
+                        }
+                        catch (err)
+                        {
+                            // TODO: this never worked correctly. Long enough timeout that it will resolve eventually, yuck
+                            setTimeout(function () { showAnswerSection(quick, callback) }, 10);
+                        }
+                    }
+
+                    $answerCheckbox.change(function () {
+                        if ($(this).is(':checked')) {
+                            $('#question-only-section, #answer-from-ask-form-item').fadeOut(function () {
+                                showAnswerSection(false, function () {
+                                    $('#wmd-input-42').focus();
+                                });
+                            });
+                        }
+                        else {
+                            $('#question-answer-section, #answer-from-ask-form-item').fadeOut(function () {
+                                $('#question-only-section, #answer-from-ask-form-item').fadeIn();
+                            });
+                        }
+                    });
+
+                    if ($answerCheckbox.is(':checked') || 0 > 0) {
+                        $answerCheckbox.attr("checked", true);
+                        $('#question-only-section').hide();
+                        StackExchange.using("editor", function () 
+                        { 
+                            setTimeout(function () { 
+                                showAnswerSection(true, function() {
+                                });
+                            }, 2); 
+                        });
+                    }
+                    
+
+            }
+        );
+    </script>
+
+        <script>
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("question_ask.visit", { 'inbox_subscription': 2 });
+                var pending = [];
+                var send = StackExchange.helpers.DelayedReaction(function () {
+                    StackExchange.gps.sendPending();
+                }, 3000);
+                var alreadySent = { "title_focus": 1 };
+                $("#title,#wmd-input,#tagnames").on("focus blur", function (evt) {
+                    var what = { title: "title", "wmd-input": "body", "tagnames": "tags" }[this.id] + "_" + evt.type;
+                    if (alreadySent[what])
+                        return;
+                    StackExchange.gps.track("question.action", { action_type: what }, true);
+                    alreadySent[what] = 1;
+                    send.trigger();
+                });
+            });
+        </script>
+
+
+        
+        
+        
+        
+        
+        
+                <script>
+        StackExchange.ready(function () {
+            StackExchange.realtime.init('wss://qa.sockets.stackexchange.com');
+            StackExchange.realtime.subscribeToReputationNotifications('1');
+                StackExchange.realtime.subscribeToTopBarNotifications('1');
+        });
+    </script>
+    <script>
+        StackExchange.init({"locale":"en","serverTime":1532053045,"routeName":"Questions/Ask","stackAuthUrl":"https://stackauth.com","networkMetaHostname":"meta.stackexchange.com","site":{"name":"Stack Overflow","description":"Q&A for professional and enthusiast programmers","isNoticesTabEnabled":true,"enableNewTagCreationWarning":true,"insertSpaceAfterNameTabCompletion":false,"id":1,"childUrl":"https://meta.stackoverflow.com","enableSocialMediaInSharePopup":true,"enableTagWatchingPopup":true,"protocol":"https"},"user":{"fkey":"2c20a76e85c25380245255e1cf14eac14df4d916b488854641121fef7c21584f","tid":"2db15b9c-0044-5d63-c5df-3a64b5cbc832","rep":117,"isRegistered":true,"userType":3,"userId":7412495,"accountId":8728882,"gravatar":"<div class=\"gravatar-wrapper-32\"><img src=\"https://lh5.googleusercontent.com/-rinrYIDw7LQ/AAAAAAAAAAI/AAAAAAAAAbc/py7wyd09gLs/photo.jpg?sz=32\" alt=\"\" width=\"32\" height=\"32\"></div>","profileUrl":"https://stackoverflow.com/users/7412495/isaac-krementsov","canSeeDeletedPosts":false},"realtime":{"newest":false,"active":false,"tagged":true,"staleDisconnectIntervalInHours":0,"workerIframeDomain":"https://cdn.sstatic.net"},"events":{"postType":{"question":1},"postEditionSection":{"title":1,"body":2,"tags":3}},"story":{"minCompleteBodyLength":75,"likedTagsMaxLength":300,"dislikedTagsMaxLength":300},"jobPreferences":{"maxNumDeveloperRoles":2,"maxNumIndustries":4}}, {"site":{"allowImageUploads":true,"enableUserHovercards":true,"styleCode":true,"enableImgurHttps":true,"forceHttpsImages":true},"userMessaging":{"showNewFeatureNotice":true},"comments":{},"userProfile":{"openGraphAPIKey":"58740831ad23540e00c58987"},"tags":{},"accounts":{"currentPasswordRequiredForChangingStackIdPassword":true},"flags":{"allowRetractingFlags":true},"snippets":{"snippetsEnabled":true,"renderDomain":"stacksnippets.net"},"paths":{},"markdown":{"asteriskIntraWordEmphasis":true},"monitoring":{"clientTimingsAbsoluteTimeout":30000,"clientTimingsDebounceTimeout":1000},"channels":{"removeExtraBillingAndShippingFields":true},"slack":{"sidebarAdDismissCookie":"slack-sidebar-ad"}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.en.js":"ed65f48abb75","js/moderator.en.js":"c48addfbc3c8","js/full-anon.en.js":"6b5a5a00995a","js/full.en.js":"1345b1b9f486","js/wmd.en.js":"799b15f795ce","js/mobile.en.js":"485a932a3088","js/help.en.js":"26fed267aae8","js/tageditor.en.js":"73918e8973e0","js/tageditornew.en.js":"66b31fb9b1a3","js/inline-tag-editing.en.js":"e7aa31e8eba1","js/revisions.en.js":"2faaeaae2529","js/review.en.js":"1ef4777199c3","js/tagsuggestions.en.js":"78eee7c19ab2","js/post-validation.en.js":"cf0ec6b0da66","js/explore-qlist.en.js":"e2a8178eb759","js/events.en.js":"cfd09a0f4fbf","js/keyboard-shortcuts.en.js":"95d4d3d30f5f","js/external-editor.en.js":"372b5f0846dd","js/adops.en.js":"22a9bd59b1e9","js/external-editor.en.js":"372b5f0846dd","js/snippet-javascript.en.js":"7d184f094cb6","js/snippet-javascript-codemirror.en.js":"a4666bb05fb7"});
+        StackExchange.using("gps", function() {
+             StackExchange.gps.init(true);
+        });
+    </script>
+    <noscript id="noscript-css"><style>body,.top-bar{margin-top:1.9em}</style></noscript>
+    <script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/full.en.js.download"></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/tageditornew.en.js.download"></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/tagsuggestions.en.js.download"></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/wmd.en.js.download"></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/post-validation.en.js.download"></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/external-editor.en.js.download"></script><script async="" src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/snippet-javascript.en.js.download"></script><style type="text/css"> .wmd-snippet-button span { background-position: 0 0; } .wmd-snippet-button:hover span { background-position: 0 -40px; }</style></head>
+        <body class="ask-page unified-theme new-topbar">
+    <div id="notify-container"></div>
+    <div id="custom-header"></div>
+
+
+
+
+<header class="top-bar js-top-bar _fixed top-bar__network">
+    <div class="-container">
+        <div class="-main">
+                <a href="https://stackoverflow.com/questions/ask#" class="left-sidebar-toggle p0 ai-center jc-center js-left-sidebar-toggle"><span class="ps-relative"></span></a>
+                                <a href="https://stackoverflow.com/" class="-logo js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:8})">
+                        <span class="-img _glyph">Stack Overflow</span>
+                    </a>
+
+
+
+        </div>
+
+            <form id="search" action="https://stackoverflow.com/search" method="get" class="searchbar js-searchbar " autocomplete="off" role="search">
+                    <div class="ps-relative">
+                        <input name="q" type="text" placeholder="Search…" value="" autocomplete="off" maxlength="240" class="f-input js-search-field ">
+                        <button type="submit" aria-label="Search..." class="s-btn s-btn__primary btn-topbar-primary js-search-submit"><svg aria-hidden="true" class="svg-icon mx0 iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="M12.86 11.32L18 16.5 16.5 18l-5.18-5.14v-.35a7 7 0 1 1 1.19-1.19h.35zM7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10z"></path></svg></button>
+                    </div>
+            </form>
+
+        
+
+
+
+
+
+<ol class="-secondary js-secondary-topbar-links drop-icons-responsively the-js-is-handling-responsiveness">
+        <li class="-item searchbar-trigger js-searchbar-trigger"><a href="https://stackoverflow.com/questions/ask#" class="-link"><svg aria-hidden="true" class="svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="M12.86 11.32L18 16.5 16.5 18l-5.18-5.14v-.35a7 7 0 1 1 1.19-1.19h.35zM7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10z"></path></svg></a></li>
+                <li class="-item">
+                <a href="https://stackoverflow.com/users/7412495/isaac-krementsov" class="my-profile js-gps-track" data-gps-track="profile_summary.click()">
+                <div class="gravatar-wrapper-24" title="Isaac Krementsov"><img src="./GoLang Redis session map does not allow indexing - Stack Overflow_files/photo.jpg" alt="" width="24" height="24" class="-avatar js-avatar-me"></div>
+                    <div class="-rep js-header-rep" title="your reputation: 117">117</div>
+                        <div class="-badges">
+<span title="12 bronze badges"><span class="badge3">●</span><span class="badgecount">12</span></span>                        </div>
+                </a>
+            </li>
+        <li class="-item">
+        <a href="https://stackexchange.com/users/8728882?tab=inbox" class="-link js-inbox-button" title="Recent inbox messages">
+            <svg aria-hidden="true" class="svg-icon iconInbox" width="20" height="18" viewBox="0 0 20 18"><path d="M15.19 1H4.63c-.85 0-1.6.54-1.85 1.35L0 10.79V15c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2v-4.21l-2.87-8.44A2 2 0 0 0 15.19 1zm-.28 10l-2 2h-6l-2-2H1.96L4.4 3.68A1 1 0 0 1 5.35 3h9.12a1 1 0 0 1 .95.68L17.86 11h-2.95z"></path></svg>
+            <span class="indicator-badge js-unread-count _important" style="display: none;"></span>
+        </a>
+    </li>
+    <li class="-item">
+        <a href="https://stackexchange.com/users/8728882?tab=reputation" class="-link js-achievements-button" title="Recent achievements: reputation, badges, and privileges earned" data-unread-class="_highlighted-positive">
+            <svg aria-hidden="true" class="svg-icon iconAchievements" width="18" height="18" viewBox="0 0 18 18"><path d="M15 2V1H3v1H0v4c0 1.6 1.4 3 3 3v1c.4 1.5 3 2.6 5 3v2H5s-1 1.5-1 2h10c0-.4-1-2-1-2h-3v-2c2-.4 4.6-1.5 5-3V9c1.6-.2 3-1.4 3-3V2h-3zM3 7c-.5 0-1-.5-1-1V4h1v3zm8.4 2.5L9 8 6.6 9.4l1-2.7L5 5h3l1-2.7L10 5h2.8l-2.3 1.8 1 2.7h-.1zM16 6c0 .5-.5 1-1 1V4h1v2z"></path></svg>
+            <span class="indicator-badge js-unread-count _positive" style="display: none;"></span>
+        </a>
+    </li>
+
+    <li class="-item help-button-item" data-remove-order="1"><a href="https://stackoverflow.com/questions/ask#" class="-link js-help-button" title="Help Center and other resources">
+        <svg aria-hidden="true" class="svg-icon iconHelp" width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 0 16A8 8 0 0 0 9 1zm.81 12.13c-.02.71-.55 1.15-1.24 1.13-.66-.02-1.17-.49-1.15-1.2.02-.72.56-1.18 1.22-1.16.7.03 1.2.51 1.17 1.23zM11.77 8a5.8 5.8 0 0 1-1.02.91l-.53.37c-.26.2-.42.43-.5.69a4 4 0 0 0-.09.75c0 .05-.03.16-.18.16H7.88c-.16 0-.18-.1-.18-.15.03-.66.12-1.21.4-1.66a5.29 5.29 0 0 1 1.43-1.22c.16-.12.28-.25.38-.39a1.34 1.34 0 0 0 .02-1.71c-.24-.31-.51-.46-1.03-.46-.51 0-.8.26-1.02.6-.21.33-.18.73-.18 1.1H5.75c0-1.38.35-2.25 1.1-2.76.52-.35 1.17-.5 1.93-.5 1 0 1.79.18 2.49.71.64.5.98 1.18.98 2.12 0 .57-.2 1.05-.48 1.44z"></path></svg>
+    </a></li>
+
+    <li class="-item">
+        <a href="https://stackexchange.com/" class="-link js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 174 Stack Exchange sites">
+            <svg aria-hidden="true" class="svg-icon iconStackExchange" width="18" height="18" viewBox="0 0 18 18"><path d="M1 13c0 1.1.9 2 2 2h8v3l3-3h1a2 2 0 0 0 2-2v-2H1v2zM15 1H3a2 2 0 0 0-2 2v2h16V3a2 2 0 0 0-2-2zM1 6h16v4H1V6z"></path></svg>
+        </a>
+    </li>
+
+
+    <li class="-dialog-container js-topbar-dialog-corral">
+
+
+    <div class="topbar-dialog siteSwitcher-dialog dno">
+        <div class="header">
+            <h3><a href="https://stackoverflow.com/">current community</a>
+            </h3>
+        </div>
+        <div class="modal-content current-site-container">
+            <ul class="current-site">
+                    <li class="grid">
+                            <div class="fl1">
+            <a href="https://stackoverflow.com/" class="current-site-link site-link js-gps-track grid gs8 gsx" data-id="1" data-gps-track="site_switcher.click({ item_type:3 })">
+        <div class="favicon favicon-stackoverflow site-icon grid--cell" title="Stack Overflow"></div>
+        <span class="grid--cell fl1">
+            Stack Overflow
+        </span>
+    </a>
+
+    </div>
+    <div class="related-links">
+            <a href="https://stackoverflow.com/help" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:14 })">help</a>
+                    <a href="https://chat.stackoverflow.com/" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+                    <a href="https://stackoverflow.com/users/logout" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:8 })">log out</a>
+    </div>
+
+                    </li>
+                    <li class="related-site grid">
+                            <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                            <a href="https://meta.stackoverflow.com/" class="site-link js-gps-track grid gs8 gsx" data-id="552" data-gps-track="site.switch({ target_site:552, item_type:3 }),site_switcher.click({ item_type:4 })">
+        <div class="favicon favicon-stackoverflowmeta site-icon grid--cell" title="Meta Stack Overflow"></div>
+        <span class="grid--cell fl1">
+            Meta Stack Overflow
+        </span>
+    </a>
+
+                    </li>
+            </ul>
+        </div>
+
+        <div class="header" id="your-communities-header">
+            <h3>
+                    <a href="https://stackexchange.com/users/8728882/?tab=accounts">your communities</a>
+            </h3>
+
+                <a href="https://stackoverflow.com/questions/ask#" id="edit-pinned-sites">edit</a>
+                <a href="https://stackoverflow.com/questions/ask#" id="cancel-pinned-sites" style="display: none;">cancel</a>
+        </div>
+        <div class="modal-content" id="your-communities-section">
+
+                <ul class="my-sites">
+                        <li>
+                                <a href="https://stackoverflow.com/" class="site-link js-gps-track grid gs8 gsx" data-id="1" data-gps-track="site.switch({ target_site:1, item_type:3 }),site_switcher.click({ item_type:1 })">
+        <div class="favicon favicon-stackoverflow site-icon grid--cell" title="Stack Overflow"></div>
+        <span class="grid--cell fl1">
+            Stack Overflow
+        </span>
+            <span class="rep-score grid--cell">117</span>
+    </a>
+
+                        </li>
+                        <li>
+                                <a href="https://superuser.com/" class="site-link js-gps-track grid gs8 gsx" data-id="3" data-gps-track="site.switch({ target_site:3, item_type:3 }),site_switcher.click({ item_type:1 })">
+        <div class="favicon favicon-superuser site-icon grid--cell" title="Super User"></div>
+        <span class="grid--cell fl1">
+            Super User
+        </span>
+            <span class="rep-score grid--cell">6</span>
+    </a>
+
+                        </li>
+                        <li>
+                                <a href="https://askubuntu.com/" class="site-link js-gps-track grid gs8 gsx" data-id="89" data-gps-track="site.switch({ target_site:89, item_type:3 }),site_switcher.click({ item_type:1 })">
+        <div class="favicon favicon-askubuntu site-icon grid--cell" title="Ask Ubuntu"></div>
+        <span class="grid--cell fl1">
+            Ask Ubuntu
+        </span>
+            <span class="rep-score grid--cell">3</span>
+    </a>
+
+                        </li>
+                </ul>
+                    <div class="pinned-site-editor-container" style="display: none;">
+                        <input type="hidden" name="fkey" value="2c20a76e85c25380245255e1cf14eac14df4d916b488854641121fef7c21584f">
+                        <input id="js-site-search-txt" type="text" class="site-filter-input" value="" placeholder="Add a Stack Exchange community">
+                        <input type="submit" id="pin-site-btn" value="Add" disabled="disabled">
+                        <ul class="js-found-sites found-sites"></ul>
+                        <ul class="pinned-site-list sortable" data-custom-list="False">
+                        </ul>
+                        <input type="submit" value="Save" id="save-pinned-sites-btn" disabled="disabled">
+                        <a href="https://stackoverflow.com/questions/ask#" id="reset-pinned-sites">reset to default list</a>
+                    </div>
+        </div>
+
+        <div class="header">
+            <h3><a href="https://stackexchange.com/sites">more stack exchange communities</a>
+            </h3>
+            <a href="https://stackoverflow.blog/" class="fr">company blog</a>
+        </div>
+        <div class="modal-content">
+                <div class="child-content"></div>
+        </div>        
+    </div>
+            <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="https://stackoverflow.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="https://stackoverflow.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                        <li>
+                            <a href="https://meta.stackoverflow.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                                Meta
+                                <span class="item-summary">
+                                    Discuss the workings and policies of this site
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                                About Us
+                                <span class="item-summary">
+                                    Learn more about Stack Overflow the company
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.stackoverflowbusiness.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                                Business
+                                <span class="item-summary">
+                                    Learn more about hiring developers or posting ads with us
+                                </span>
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+                    <div class="topbar-dialog leftnav-dialog js-leftnav-dialog dno">
+                <div class="left-sidebar js-unpinned-left-sidebar" data-can-be="left-sidebar" data-is-here-when="sm"></div>
+            </div>
+    </li>
+</ol>
+
+    </div>
+</header>
+
+    <script>
+        StackExchange.ready(function () { StackExchange.topbar.init({ observeSize: true }); });
+        StackExchange.scrollPadding.setPaddingTop(50, 10);     </script>
+
+
+    
+
+
+    <div class="container">
+                
+
+
+
+<div id="left-sidebar" data-is-here-when="md lg" class="left-sidebar js-pinned-left-sidebar">
+    <div class="left-sidebar--sticky-container js-sticky-leftnav">
+        <nav role="navigation">
+            <ol class="nav-links">
+                <li>    </li><li>
+        <a href="https://stackoverflow.com/" class="pl8 js-gps-track nav-links--link" data-gps-track="top_nav.click({is_current:false, location:3, destination:8})">
+Home        </a>
+    </li>
+
+                <li>
+                    <ol class="nav-links">
+                            <li class="fs-fine tt-uppercase ml8 mt16 mb4 fc-light">Public</li>
+                            <li>
+        <a id="nav-questions" href="https://stackoverflow.com/questions" class="pl8 js-gps-track nav-links--link -link__with-icon" data-gps-track="top_nav.click({is_current:false, location:3, destination:1})">
+<svg aria-hidden="true" class="svg-icon iconGlobe" width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 0 16A8 8 0 0 0 9 1zM8 15.32a6.4 6.4 0 0 1-5.23-7.75L7 11.68v.8c0 .88.12 1.32 1 1.32v1.52zm5.72-2c-.2-.66-1-1.32-1.72-1.32h-1v-2c0-.44-.56-1-1-1H6V7h1c.44 0 1-.56 1-1V5h2c.88 0 1.4-.72 1.4-1.6v-.33a6.4 6.4 0 0 1 2.32 10.24z"></path></svg>                <span class="-link--channel-name">Stack Overflow</span>
+        </a>
+    </li>
+
+    <li>
+        <a id="nav-tags" href="https://stackoverflow.com/tags" class=" js-gps-track nav-links--link" data-gps-track="top_nav.click({is_current:false, location:3, destination:2})">
+Tags        </a>
+    </li>
+    <li>
+        <a id="nav-users" href="https://stackoverflow.com/users" class=" js-gps-track nav-links--link" data-gps-track="top_nav.click({is_current:false, location:3, destination:3})">
+Users        </a>
+    </li>
+    <li>
+        <a id="nav-jobs" href="https://stackoverflow.com/jobs?med=site-ui&amp;ref=jobs-tab" class=" js-gps-track nav-links--link" data-gps-track="top_nav.click({is_current:false, location:3, destination:6})">
+Jobs        </a>
+    </li>
+                                            </ol>
+                </li>
+                    <li>
+                        <ol class="nav-links">
+                            <li class="fs-fine tt-uppercase ml8 mt24 mb4 fc-light">
+                                Teams
+                            </li>
+    <li>
+        <a href="https://stackoverflow.com/teams" class="pl8 js-gps-track nav-links--link -link__with-icon" title="A private, secure home for your team&#39;s questions and answers. Starts at $10/month" data-ga="[&quot;teams traffic&quot;,&quot;so public cta&quot;,&quot;stackoverflow.com/teams&quot;,null,{&quot;dimension4&quot;:&quot;teams&quot;}]" data-gps-track="top_nav.click({is_current:false, location:3, destination:10})">
+<svg aria-hidden="true" class="svg-icon iconPlus" width="18" height="18" viewBox="0 0 18 18"><path d="M10 2H8v6H2v2h6v6h2v-6h6V8h-6z"></path></svg>                <span class="-link--channel-name">Create Team</span>
+        </a>
+    </li>
+                        </ol>
+                    </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+        <div id="content" class="snippet-hidden">
+
+
+            
+
+
+
+
+<div id="mainbar" class="ask-mainbar box-border">
+        <div class="system-alert quality-warning">
+                <p>Wait! Some of your past questions have not been well-received, and you're in danger of <a href="https://stackoverflow.com/help/question-bans">being blocked from asking any more</a>.</p>
+                <p>For help formulating a clear, useful question, see: <a href="https://stackoverflow.com/help/how-to-ask">How do I ask a good question?</a></p>
+                <p>Also, edit your previous questions to improve formatting and clarity.</p>
+        </div>
+
+    <form id="post-form" class="post-form" action="https://stackoverflow.com/questions/ask/submit" method="post">
+        <input type="hidden" name="qualityBanWarningShown" value="True">
+        <input type="hidden" name="priorAttemptCount" value="0"> 
+        <input type="hidden" name="warntags">
+                        <div id="question-form">
+                <div class="question-context-title">
+                    Ask a question
+                </div>
+            <div class="wz-element" id="post-title" style="position: relative;" data-wz-state="1,2,8"> 
+                <div class="form-item ask-title">
+                    <div class="wz-element" data-wz-state="1,8">
+                        <div class="grid gs8 gsx">
+                            <div class="grid--cell fl1 grid fd-column">
+                                <label class="s-label mb4" for="title">Title</label>
+                                <div class="fl1">
+                                        <input id="title" name="title" type="text" maxlength="300" tabindex="100" placeholder="What&#39;s your programming question? Be specific." class="s-input js-ask-title h100 mt0 ask-title-field" data-min-length="15" data-max-length="150" autocomplete="off">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h0 ps-relative ps-sticky b64 t32 mxn4 z-active d-none md:d-block"> 
+                        <div class="js-help-pointer bg-yellow-100 ba bc-black-4 bar-sm bs-sm wmx4 m-auto pl16 grid jc-space-between ai-center c-pointer d-none" data-for="#how-to-title">
+                            <div>
+                                <svg aria-hidden="true" class="svg-icon iconHelp" width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 0 16A8 8 0 0 0 9 1zm.81 12.13c-.02.71-.55 1.15-1.24 1.13-.66-.02-1.17-.49-1.15-1.2.02-.72.56-1.18 1.22-1.16.7.03 1.2.51 1.17 1.23zM11.77 8a5.8 5.8 0 0 1-1.02.91l-.53.37c-.26.2-.42.43-.5.69a4 4 0 0 0-.09.75c0 .05-.03.16-.18.16H7.88c-.16 0-.18-.1-.18-.15.03-.66.12-1.21.4-1.66a5.29 5.29 0 0 1 1.43-1.22c.16-.12.28-.25.38-.39a1.34 1.34 0 0 0 .02-1.71c-.24-.31-.51-.46-1.03-.46-.51 0-.8.26-1.02.6-.21.33-.18.73-.18 1.1H5.75c0-1.38.35-2.25 1.1-2.76.52-.35 1.17-.5 1.93-.5 1 0 1.79.18 2.49.71.64.5.98 1.18.98 2.12 0 .57-.2 1.05-.48 1.44z"></path></svg> <b>How to ask</b> <a class="ml16" href="https://stackoverflow.com/questions/ask#how-to-title">learn more</a>
+                            </div>
+                            <button class="js-dismiss-pointer s-btn fc-black-900">
+                                <svg aria-hidden="true" class="svg-icon d-block m0 iconClearSm" width="14" height="14" viewBox="0 0 14 14"><path d="M12 3.41L10.59 2 7 5.59 3.41 2 2 3.41 5.59 7 2 10.59 3.41 12 7 8.41 10.59 12 12 10.59 8.41 7z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="wz-element" data-wz-state="2">
+                        <div id="question-suggestions"><label>Questions that may already have your answer</label>
+        <div class="title-search-container">
+<div class="answer-summary">
+    <a href="https://stackoverflow.com/q/42010663/7412495" title="0 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/42010663/aspgridview-databinding-system-data-datatable-does-not-allow-indexed-access" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">asp:GridView DataBinding: 'System.Data.DataTable' does not allow indexed access</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/34209111/7412495" title="0 votes">
+        <div class="answer-votes default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/34209111/why-concurrent-hash-map-does-not-allow-null-key-or-null-values" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Why Concurrent hash map does not allow null key or null values</a>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/25122289/7412495" title="1 vote">
+        <div class="answer-votes default">1</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/25122289/magento-redis-session-warning-session-start-user-session-functions-not-defi" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Magento/redis-session. Warning: session_start(): user session functions not defined</a>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/20375089/7412495" title="6 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">6</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/20375089/laravel-redis-session-driver-doesnt-work" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Laravel Redis Session Driver doesn't work</a>
+            <span title="3 answers">3</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/51254675/7412495" title="0 votes">
+        <div class="answer-votes default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/51254675/redis-session-disable-locking-to-true" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Redis session disable_locking to true</a>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/18094998/7412495" title="0 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/18094998/no-hibernate-session-bound-to-thread-and-configuration-does-not-allow-creation" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">No Hibernate Session bound to thread, and configuration does not allow creation of non-transactional</a>
+            <span title="2 answers">2</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/33820025/7412495" title="2 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">2</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/33820025/connecting-golang-and-redis-through-docker" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Connecting golang and redis through docker</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/18065442/7412495" title="1 vote">
+        <div class="answer-votes default">1</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/18065442/laravel-4-redis-session-connection" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Laravel 4 Redis Session Connection</a>
+            <span title="3 answers">3</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/35473916/7412495" title="0 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/35473916/configure-gin-gonic-session-using-redis-in-golang" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Configure gin-gonic session using Redis in Golang</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/38612014/7412495" title="0 votes">
+        <div class="answer-votes default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/38612014/element-terracotta-does-not-allow-attribute-storagestrategy" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Element &lt;terracotta&gt; does not allow attribute “storageStrategy”</a>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/29259383/7412495" title="2 votes">
+        <div class="answer-votes default">2</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/29259383/meteor-cordova-does-not-allow-cors" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Meteor cordova does not allow CORS</a>
+            <span title="2 answers">2</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/51372624/7412495" title="0 votes">
+        <div class="answer-votes default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/51372624/laravel-redis-session-data" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Laravel Redis Session Data</a>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/24904548/7412495" title="3 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">3</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/24904548/typed-map-does-not-support-indexing" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Typed map does not support indexing</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/49561828/7412495" title="0 votes">
+        <div class="answer-votes default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/49561828/redis-session-management-with-node-js" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Redis Session management with Node js</a>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/24803224/7412495" title="0 votes">
+        <div class="answer-votes default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/24803224/store-data-in-redis-session-to-enable-automatic-expiration-when-session-expires" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Store data in redis session to enable automatic expiration when session expires</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/13962811/7412495" title="2 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">2</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/13962811/why-ocaml-does-not-allow-function-matching" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Why OCaml does not allow function matching? [closed]</a>
+            <span title="3 answers">3</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/32356638/7412495" title="1 vote, with an accepted answer">
+        <div class="answer-votes answered-accepted default">1</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/32356638/cannot-run-node-redis-session-lib" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Cannot run node-redis-session lib</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/32315648/7412495" title="0 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/32315648/golang-redis-pubsub-timeout" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Golang Redis PubSub timeout</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/27206991/7412495" title="0 votes">
+        <div class="answer-votes default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/27206991/nodejs-redis-session-does-not-persist-over-browser-redirects" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">NodeJS Redis Session does not persist over browser redirects</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/12219091/7412495" title="7 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">7</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/12219091/sqlbulkcopy-does-not-allow-dbnull-value" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">sqlbulkcopy - does not allow DBNull.Value.?</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/44485133/7412495" title="0 votes">
+        <div class="answer-votes default">0</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/44485133/os-system-does-not-allow-a-command-with" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">os.system does not allow a command with &gt;</a>
+            <span title="2 answers">2</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/19475940/7412495" title="1 vote">
+        <div class="answer-votes default">1</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/19475940/redis-session-django-keyerror-when-reading-from-session" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Redis session Django : KeyError when reading from session</a>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/8619648/7412495" title="3 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">3</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/8619648/php-redis-session-not-saving" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">PHP Redis Session not saving</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/12719926/7412495" title="1 vote, with an accepted answer">
+        <div class="answer-votes answered-accepted default">1</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/12719926/redis-session-store-on-heroku" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Redis session store on heroku</a>
+            <span title="1 answer">1</span>
+    </div>
+</div><div class="answer-summary">
+    <a href="https://stackoverflow.com/q/22567224/7412495" title="-4 votes, with an accepted answer">
+        <div class="answer-votes answered-accepted default">-4</div>
+    </a>
+    <div class="answer-link " style="width:90%">
+        <a href="https://stackoverflow.com/questions/22567224/do-not-allow-multiple-application-instances" class="question-hyperlink js-gps-track" dir="ltr" target="_blank">Do not allow multiple application instances</a>
+            <span title="1 answer">1</span>
+    </div>
+</div>        </div></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <script>
+            StackExchange.ifUsing("editor", function () {
+                StackExchange.using("externalEditor", function () {
+                    StackExchange.using("snippets", function () {
+                        StackExchange.snippets.init();
+                    });
+                });
+            }, "code-snippets");
+        </script>
+    
+
+<script>
+    StackExchange.ready(function() {
+        StackExchange.using("tagEditor", function () { StackExchange.tagEditor.ready.done(initFadingHelpText); });
+        var channelOptions = {
+            tags: "".split(" "),
+            id: "1"
+        };
+        initTagRenderer("".split(" "), "".split(" "), channelOptions);
+       
+        StackExchange.using("externalEditor", function() {
+                // Have to fire editor after snippets, if snippets enabled
+                if (StackExchange.settings.snippets.snippetsEnabled) {
+                    StackExchange.using("snippets", function() {
+                        createEditor();
+                    });
+                }
+                else {
+                    createEditor();
+                }
+            });
+
+            function createEditor() {
+                StackExchange.prepareEditor({
+                    heartbeatType: 'ask',
+                convertImagesToLinks: false,
+                noModals: false,
+                showLowRepImageUploadWarning: false,
+                reputationToPostImages: null,
+                bindNavPrevention: true,
+                postfix: "",
+                    onDemand: false,
+                    discardSelector: ".discard-question"
+                    ,userId:7412495
+                    });
+                
+
+        }
+    });
+</script>
+
+
+<div id="post-editor" class="post-editor js-post-editor wz-element" data-wz-state="3,4,5,6,7,8">
+
+    <div style="position: relative;"> 
+            <label class="s-label mb4 d-block" for="wmd-input">Body</label>
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar btr-sm mt0"><ul id="wmd-button-row" class="wmd-button-row"><li class="wmd-button" id="wmd-bold-button" title="Strong &lt;strong&gt; Ctrl+B"><span style="background-position: 0px 0px;"></span></li><li class="wmd-button" id="wmd-italic-button" title="Emphasis &lt;em&gt; Ctrl+I"><span style="background-position: -20px 0px;"></span></li><li class="wmd-spacer wmd-spacer1" id="wmd-spacer1"></li><li class="wmd-button" id="wmd-link-button" title="Hyperlink &lt;a&gt; Ctrl+L"><span style="background-position: -40px 0px;"></span></li><li class="wmd-button" id="wmd-quote-button" title="Blockquote &lt;blockquote&gt; Ctrl+Q"><span style="background-position: -60px 0px;"></span></li><li class="wmd-button" id="wmd-code-button" title="Code Sample &lt;pre&gt;&lt;code&gt; Ctrl+K"><span style="background-position: -80px 0px;"></span></li><li class="wmd-button" id="wmd-image-button" title="Image &lt;img&gt; Ctrl+G"><span style="background-position: -100px 0px;"></span></li><li class="wmd-button wmd-snippet-button" id="wmd-snippet-button" title="JavaScript/HTML/CSS snippet Ctrl-M"><span style="background-image: url(&quot;/content/Shared/balsamiq/wmd-mockup-button.png&quot;);"></span></li><li class="wmd-spacer wmd-spacer2" id="wmd-spacer2"></li><li class="wmd-button" id="wmd-olist-button" title="Numbered List &lt;ol&gt; Ctrl+O"><span style="background-position: -120px 0px;"></span></li><li class="wmd-button" id="wmd-ulist-button" title="Bulleted List &lt;ul&gt; Ctrl+U"><span style="background-position: -140px 0px;"></span></li><li class="wmd-button" id="wmd-heading-button" title="Heading &lt;h1&gt;/&lt;h2&gt; Ctrl+H"><span style="background-position: -160px 0px;"></span></li><li class="wmd-button" id="wmd-hr-button" title="Horizontal Rule &lt;hr&gt; Ctrl+R"><span style="background-position: -180px 0px;"></span></li><li class="wmd-spacer wmd-spacer3" id="wmd-spacer3"></li><li class="wmd-button" id="wmd-undo-button" title="Undo - Ctrl+Z"><span style="background-position: -200px 0px;"></span></li><li class="wmd-button" id="wmd-redo-button" title="Redo - Ctrl+Y"><span style="background-position: -220px 0px;"></span></li><li class="wmd-spacer wmd-spacer-max"></li><li class="wmd-button wmd-help-button" id="wmd-help-button" title="Markdown Editing Help" style="right: 0px;"><span style="background-position: -240px 0px;"></span></li></ul></div>
+            <textarea id="wmd-input" class="wmd-input wz-element s-input bar0 processed" name="post-text" cols="92" rows="15" tabindex="101" data-wz-state="8" data-min-length=""></textarea>
+        <div class="grippie" style="margin-right: 0px;"></div></div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height: 24px; display: none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"><p>I have a web app which uses a session struct with a composed model struct.</p>
+
+<pre><code>type Session struct {
+    SessionModel
+}
+type SessionModel interface { }
+</code></pre>
+
+<p>UserSession is the session model composed within <code>Session</code> </p>
+
+<pre><code>type UserSession struct {
+    Name string
+    Email string
+    Password string
+}
+</code></pre>
+
+<p>When I unmarshal JSON session data from Redis, a map is stored in the SessionModel field (the interface which allows classes to embed). </p>
+
+<p>I can access SessionModel and its type is a map, but when I try to access indexed values, I get the error <code>invalid operation: session.SessionModel["Username"] (type sessions.SessionModel does not support indexing)</code>. What is going on?</p></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" type="hidden" value="2c20a76e85c25380245255e1cf14eac14df4d916b488854641121fef7c21584f">
+        <input id="author" name="author" type="text">
+    <input type="hidden" name="i1l" value="ejnmRqoe3HZ+xh2CzVogexD/rj3WvaDi4BQWiGgKEL0="></div>
+
+
+
+</div>
+
+            <div class="h32 ps-relative ps-sticky b32 mxn4 z-active d-none md:d-block"> 
+                <div class="js-help-pointer bg-yellow-100 ba bc-black-4 bar-sm bs-sm wmx4 m-auto pl16 grid jc-space-between ai-center c-pointer" data-for="#how-to-format">
+                    <div>
+                        <svg aria-hidden="true" class="svg-icon iconHelp" width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 0 16A8 8 0 0 0 9 1zm.81 12.13c-.02.71-.55 1.15-1.24 1.13-.66-.02-1.17-.49-1.15-1.2.02-.72.56-1.18 1.22-1.16.7.03 1.2.51 1.17 1.23zM11.77 8a5.8 5.8 0 0 1-1.02.91l-.53.37c-.26.2-.42.43-.5.69a4 4 0 0 0-.09.75c0 .05-.03.16-.18.16H7.88c-.16 0-.18-.1-.18-.15.03-.66.12-1.21.4-1.66a5.29 5.29 0 0 1 1.43-1.22c.16-.12.28-.25.38-.39a1.34 1.34 0 0 0 .02-1.71c-.24-.31-.51-.46-1.03-.46-.51 0-.8.26-1.02.6-.21.33-.18.73-.18 1.1H5.75c0-1.38.35-2.25 1.1-2.76.52-.35 1.17-.5 1.93-.5 1 0 1.79.18 2.49.71.64.5.98 1.18.98 2.12 0 .57-.2 1.05-.48 1.44z"></path></svg> <b>How to format</b> <a class="ml16" href="https://stackoverflow.com/questions/ask#how-to-title">learn more</a>
+                    </div>
+                    <div class="js-dismiss-pointer s-btn fc-black-900">
+                        <svg aria-hidden="true" class="svg-icon d-block m0 iconClearSm" width="14" height="14" viewBox="0 0 14 14"><path d="M12 3.41L10.59 2 7 5.59 3.41 2 2 3.41 5.59 7 2 10.59 3.41 12 7 8.41 10.59 12 12 10.59 8.41 7z"></path></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="h32 ps-relative ps-sticky t32 mxn4 z-active d-none md:d-block"> 
+                <div class="js-help-pointer bg-yellow-100 ba bc-black-4 bar-sm bs-sm wmx4 m-auto pl16 grid jc-space-between ai-center c-pointer d-none" data-for="#how-to-tag">
+                    <div>
+                        <svg aria-hidden="true" class="svg-icon iconHelp" width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 0 16A8 8 0 0 0 9 1zm.81 12.13c-.02.71-.55 1.15-1.24 1.13-.66-.02-1.17-.49-1.15-1.2.02-.72.56-1.18 1.22-1.16.7.03 1.2.51 1.17 1.23zM11.77 8a5.8 5.8 0 0 1-1.02.91l-.53.37c-.26.2-.42.43-.5.69a4 4 0 0 0-.09.75c0 .05-.03.16-.18.16H7.88c-.16 0-.18-.1-.18-.15.03-.66.12-1.21.4-1.66a5.29 5.29 0 0 1 1.43-1.22c.16-.12.28-.25.38-.39a1.34 1.34 0 0 0 .02-1.71c-.24-.31-.51-.46-1.03-.46-.51 0-.8.26-1.02.6-.21.33-.18.73-.18 1.1H5.75c0-1.38.35-2.25 1.1-2.76.52-.35 1.17-.5 1.93-.5 1 0 1.79.18 2.49.71.64.5.98 1.18.98 2.12 0 .57-.2 1.05-.48 1.44z"></path></svg> <b>How to tag</b> <a class="ml16" href="https://stackoverflow.com/questions/ask#how-to-tag">learn more</a>
+                    </div>
+                    <div class="js-dismiss-pointer s-btn fc-black-900">
+                        <svg aria-hidden="true" class="svg-icon d-block m0 iconClearSm" width="14" height="14" viewBox="0 0 14 14"><path d="M12 3.41L10.59 2 7 5.59 3.41 2 2 3.41 5.59 7 2 10.59 3.41 12 7 8.41 10.59 12 12 10.59 8.41 7z"></path></svg>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="wz-element" id="tag-editor" data-wz-state="0,8" style="position: relative;"> 
+
+<script>
+    StackExchange.using("tagEditor", function () {
+        var channelOptions = {
+            tags: "".split(" "),
+            id: "1"
+        };
+        initTagRenderer("".split(" "), "".split(" "), channelOptions);
+        StackExchange.tagEditor($("#tagnames"), undefined, undefined, { responsiveIsh: true });
+        StackExchange.tagEditor.ready.then(function () {
+            StackExchange.using("beginEditEvent", function () {
+                StackExchange.beginEditEvent.init();
+            });
+        });
+    });
+</script>	
+
+<div style="position: relative;"> 
+<div class="form-item">
+    <label for="tageditor-replacing-tagnames--input" class="s-label mb4 d-block">Tags</label>
+
+    <input id="tagnames" class="s-input box-border" name="tagnames" type="text" size="60" value="" tabindex="103" placeholder="at least one tag such as (vba django ruby), max 5 tags" style="display: none;"><div class="tag-editor s-input" style="padding: 0px 9.1px; box-sizing: border-box; margin-top: 0px; margin-bottom: 0px; width: 100%; height: 37px;"><span></span><input type="text" autocomplete="off" tabindex="103" placeholder="at least one tag such as (vba django ruby), max 5 tags" id="tageditor-replacing-tagnames--input" class="s-input" style="width: 653px;"><span></span></div>
+</div>
+</div>
+
+                    <div id="tag-suggestions"><span>suggested tags:</span><a class="post-tag" rel="tag" href="https://stackoverflow.com/questions/tagged/go" title="show questions tagged &#39;go&#39;">go</a></div>
+                    <script>
+                        StackExchange.using("tagSuggestions", function () {
+                            StackExchange.tagSuggestions.init();
+                        });
+                    </script>
+                
+
+
+            </div>
+        
+            <div class="wz-element" id="question-only-section" data-wz-state="8">
+
+                <div class="form-submit cbt grid gsx gs4">
+                        <button id="submit-button" class="grid--cell s-btn s-btn__primary" type="submit" tabindex="120" autocomplete="off">
+                            Post Your Question
+                        </button>
+                        <button class="grid--cell s-btn s-btn__danger discard-question">Discard</button>
+                    
+                </div>
+            </div>
+        </div>
+
+            <div id="answer-from-ask-form-item" class="form-item">
+                <input type="checkbox" id="answer-from-ask" name="answer-from-ask" class="s-checkbox"> <label class="s-label fw-normal va-middle" for="answer-from-ask">Answer your own question</label> – <a href="https://stackoverflow.blog/2011/07/01/its-ok-to-ask-and-answer-your-own-questions/" target="_blank">share your knowledge, Q&amp;A-style</a>
+            </div>
+            <script>$("#answer-from-ask-form-item").find("a").attr("target", "_blank");</script>
+            <div id="question-answer-section" class="dno">
+                <div id="inline-answer" style="margin-bottom: 20px;">
+
+
+            <script>
+            StackExchange.ifUsing("editor", function () {
+                StackExchange.using("externalEditor", function () {
+                    StackExchange.using("snippets", function () {
+                        StackExchange.snippets.init();
+                    });
+                });
+            }, "code-snippets");
+        </script>
+    
+
+<script>
+    StackExchange.ready(function() {
+        StackExchange.using("tagEditor", function () { StackExchange.tagEditor.ready.done(initFadingHelpText); });
+        var channelOptions = {
+            tags: "".split(" "),
+            id: "1"
+        };
+        initTagRenderer("".split(" "), "".split(" "), channelOptions);
+       
+        StackExchange.using("externalEditor", function() {
+                // Have to fire editor after snippets, if snippets enabled
+                if (StackExchange.settings.snippets.snippetsEnabled) {
+                    StackExchange.using("snippets", function() {
+                        createEditor();
+                    });
+                }
+                else {
+                    createEditor();
+                }
+            });
+
+            function createEditor() {
+                StackExchange.prepareEditor({
+                    heartbeatType: '',
+                convertImagesToLinks: false,
+                noModals: false,
+                showLowRepImageUploadWarning: false,
+                reputationToPostImages: null,
+                bindNavPrevention: true,
+                postfix: "-42",
+                    onDemand: false,
+                    discardSelector: ".discard-question"
+                    ,postId:42,userId:7412495
+                    });
+                
+
+        }
+    });
+</script>
+
+
+<div id="post-editor-42" class="post-editor js-post-editor wz-element" data-wz-state="3,4,5,6,7,8">
+
+    <div style="position: relative;"> 
+        <div class="wmd-container">
+            <div id="wmd-button-bar-42" class="wmd-button-bar btr-sm"></div>
+            <textarea id="wmd-input-42" class="wmd-input wz-element s-input bar0" name="post-text-answer" cols="92" rows="15" tabindex="103" data-wz-state="8" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved-42" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded-42" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+    <div class="community-option g-row ai-center f-checkbox">
+        <div class="g-col -input">
+            <input id="communitymode-42" name="communitymode" type="checkbox">
+        </div>
+        <div class="g-col">
+            <label for="communitymode-42" class="f-label _small" title="Marking an answer community wiki encourages others to edit it by lowering the reputation barrier required to edit. However, you will not gain any upvote reputation from it. This cannot be undone.">community wiki</label>
+        </div>
+    </div>
+
+
+    <div id="wmd-preview-42" class="wmd-preview"></div>
+    <div></div>
+
+
+
+</div>
+
+                </div>
+
+
+                <div class="form-submit cbt grid gsx gs4">
+                        <button id="submit-button-42" class="grid--cell s-btn s-btn__primary" type="submit" tabindex="120" autocomplete="off">
+                            Post Your Question And Answer
+                        </button>
+                        <button class="grid--cell s-btn s-btn__danger discard-question">Discard</button>
+                </div>
+            </div>
+    </form>
+</div>
+<div id="sidebar" class="ask-sidebar">
+    <div id="scroller-anchor"></div>
+    <div id="scroller" style="position: fixed; top: 60px; width: 365px; z-index: 3;">
+            <div class="s-sidebarwidget s-sidebarwidget__yellow s-anchors s-anchors__default sidebar-help" id="how-to-title" style="display: none;">
+                <h4 class="s-sidebarwidget--header mb0">
+                    How to Ask
+                    <a href="https://stackoverflow.com/questions/ask#title" class="js-back-to-edit-field s-sidebarwidget--action d-none md:d-inline">back <svg aria-hidden="true" class="svg-icon va-middle iconArrowUpSm" width="14" height="14" viewBox="0 0 14 14"><path d="M3 9h8L7 5z"></path></svg></a>
+                </h4>
+                <div class="s-sidebarwidget--content d-block">
+                    <p><b>Is your question about programming?</b></p><p>We prefer questions that can be <i>answered</i>, not just discussed.</p><p>Provide details. Share your research.</p><p>If your question is about this website, <b><a href="http://meta.stackoverflow.com/">ask it on meta</a></b> instead.</p><p class="ar"><a href="https://stackoverflow.com/help">visit the help center »</a><br><a href="https://stackoverflow.com/help/how-to-ask">asking help »</a></p>
+                </div>
+            </div>
+
+
+<div class="s-sidebarwidget s-sidebarwidget__yellow s-anchors s-anchors__default sidebar-help" id="how-to-format" style="display: block;"><h4>Similar Questions</h4><ul><li><a href="https://stackoverflow.com/questions/1108/how-does-database-indexing-work">How does database indexing work?</a></li><li><a href="https://stackoverflow.com/questions/20035101/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present">Why does my JavaScript get a “No 'Access-Control-Allow-Origin' header is present on the requested resource” error when Postman does not?</a></li><li><a href="https://stackoverflow.com/questions/48402325/how-to-unmarshal-struct-into-map-in-golang">How to unmarshal struct into map in golang [closed]</a></li><li><a href="https://stackoverflow.com/questions/30839928/golang-unmarshal-a-json-object-into-mapstringinterface-by-default-how-can-i">golang unmarshal a json object into map[string]interface{} by default, how can I unmarshal it to []byte?</a></li><li><a href="https://stackoverflow.com/questions/41885456/golang-print-map-inside-map-generated-by-json-newdecoder">Golang print map inside map generated by json.NewDecoder</a></li><li><a href="https://stackoverflow.com/questions/48727958/is-go-able-to-unmarshal-to-mapstringinterface">Is Go able to unmarshal to map[string][]interface{}?</a></li><li><a href="https://stackoverflow.com/questions/4623974/design-for-facebook-authentication-in-an-ios-app-that-also-accesses-a-secured-we">Design for Facebook authentication in an iOS app that also accesses a secured web service</a></li><li><a href="https://stackoverflow.com/questions/25197717/how-can-i-turn-mapstringinterface-to-different-type-of-struct">How can I turn map[string]interface{} to different type of struct?</a></li><li><a href="https://stackoverflow.com/questions/10636611/how-does-access-control-allow-origin-header-work">How does Access-Control-Allow-Origin header work?</a></li><li><a href="https://stackoverflow.com/questions/49701482/invalid-operation-type-interface-does-not-support-indexing">invalid operation: (type interface {} does not support indexing)</a></li><li><a href="https://stackoverflow.com/questions/45142452/golang-json-decoder-does-not-recognize-type">Golang JSON decoder does not recognize type</a></li><li><a href="https://stackoverflow.com/questions/31036343/golang-how-to-embed-a-map-into-a-struct-so-that-it-has-a-flat-json-representati">GoLang: How to embed a map into a struct so that it has a flat json representation?</a></li><li><a href="https://stackoverflow.com/questions/41419195/golang-mapping-json-using-reflect-and-recursion">Golang - Mapping JSON using reflect and recursion</a></li></ul></div>
+
+
+    <div class="s-sidebarwidget s-sidebarwidget__yellow s-anchors s-anchors__default sidebar-help" id="how-to-tag" style="display: none;">
+        <h4 class="s-sidebarwidget--header mb0">
+            How to Tag
+            <a href="https://stackoverflow.com/questions/ask#tag-editor" class="js-back-to-edit-field s-sidebarwidget--action d-none md:d-inline">back <svg aria-hidden="true" class="svg-icon va-middle iconArrowUpSm" width="14" height="14" viewBox="0 0 14 14"><path d="M3 9h8L7 5z"></path></svg></a>
+        </h4>
+        <div class="s-sidebarwidget--content d-block">
+            <p>A tag is a keyword or label that categorizes your question with other, similar questions. Choose one or more (up to 5) tags that will help answerers to find and interpret your question.</p>
+            <p><span class="dingus">►</span> complete the sentence: <i>my question is about...</i></p>
+            <p><span class="dingus">►</span> use tags that describe things or concepts that are <i>essential</i>, not incidental to your question</p>
+            <p><span class="dingus">►</span> favor using <a href="https://stackoverflow.com/tags" target="_blank">existing popular tags</a></p>
+            <p><span class="dingus">►</span> read the descriptions that appear below the tag</p>
+            <p>If your question is primarily about a topic for which you can't find a tag:</p>
+            <p><span class="dingus">►</span> combine multiple words into single-words with hyphens (e.g. <a href="https://stackoverflow.com/questions/tagged/ruby-on-rails" class="post-tag" title="show questions tagged &#39;ruby-on-rails&#39;" rel="tag">ruby-on-rails</a>), up to a maximum of 35 characters</p>
+                <p><span class="dingus">►</span> <a href="https://stackoverflow.com/help/privileges/create-tags" target="_blank">creating new tags is a privilege</a>; if you can't yet create a tag you need, then post this question without it, then <a href="https://meta.stackoverflow.com/" target="_blank">ask the community to create it for you</a></p>
+            <p class="ar"><a href="https://stackoverflow.com/tags" target="_blank">popular tags »</a></p>
+    </div>
+</div>        </div>
+    <script>
+            StackExchange.ready(function() { moveScroller(); });
+        StackExchange.using("editor", function () {
+                        
+            var lengthCheckInterval = setInterval(function () {
+                if ($("#wmd-input").val().length >= 220) {
+                    clearInterval(lengthCheckInterval);
+                    StackExchange.cardiologist.beatASAP();
+                }
+            }, 3000);
+        });
+        
+
+    </script>
+</div>
+
+<br class="cbt">
+<div style="display:none" id="prettify-lang"></div>
+
+        </div>
+    </div>
+
+    <footer id="footer" class="site-footer js-footer" role="contentinfo">
+        <div class="site-footer--container">
+                <div class="site-footer--logo">
+
+                    
+                    <a href="https://stackoverflow.com/"><svg aria-hidden="true" class="svg-icon native iconLogoGlyphMd" width="32" height="37" viewBox="0 0 32 37"><g><path fill="#BCBBBB" d="M26 33v-9h4v13H0V24h4v9z"></path><path d="M23.1 25.99l.68-2.95-16.1-3.35L7 23l16.1 2.99zM9.1 15.2l15 7 1.4-3-15-7-1.4 3zm4.2-7.4L26 18.4l2.1-2.5L15.4 5.3l-2.1 2.5zM21.5 0l-2.7 2 9.9 13.3 2.7-2L21.5 0zM7 30h16v-3H7v3z" fill="#F48024"></path></g></svg></a>
+                </div>
+            
+            <nav class="site-footer--nav">
+                    <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
+                        <h5 class="-title"><a href="https://stackoverflow.com/" class="js-gps-track" data-gps-track="footer.click({ location: 3, link: 15})">Stack Overflow</a></h5>
+                        <ul class="-list js-primary-footer-links">
+                            <li class="-item"><a href="https://stackoverflow.com/questions" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 16})">Questions</a></li>
+                                <li class="-item"><a href="https://stackoverflow.com/jobs" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 17})">Jobs</a></li>
+                                <li class="-item"><a href="https://stackoverflow.com/jobs/directory/developer-jobs" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 11})">Developer Jobs Directory</a></li>
+                                     <li class="-item"><a href="https://stackoverflow.com/jobs/salary" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 28})">Salary Calculator</a></li>
+                                                            <li class="-item"><a href="https://stackoverflow.com/help" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 3 })">Help</a></li>
+                                <li class="-item"><a onclick="StackExchange.switchMobile(&quot;on&quot;)" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 12 })">Mobile</a></li>
+                        <li class="-item"><a class="-link" role="button">Disable Responsiveness</a></li></ul>
+                    </div>
+                    <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
+                        <h5 class="-title"><a href="https://www.stackoverflowbusiness.com/" class="js-gps-track" data-gps-track="footer.click({ location: 3, link: 19 })">Products</a></h5>
+                        <ul class="-list">
+                            <li class="-item"><a href="https://stackoverflow.com/teams" class="js-gps-track -link" data-ga="[&quot;teams traffic&quot;,&quot;footer - site nav&quot;,&quot;stackoverflow.com/teams&quot;,null,{&quot;dimension4&quot;:&quot;teams&quot;}]" data-gps-track="footer.click({ location: 3, link: 29 })">Teams</a></li>
+                            <li class="-item"><a href="https://www.stackoverflowbusiness.com/talent" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 20 })">Talent</a></li>
+                            <li class="-item"><a href="https://www.stackoverflowbusiness.com/advertise" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 21 })">Engagement</a></li>
+                            <li class="-item"><a href="https://stackoverflow.com/enterprise" class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 22 })">Enterprise</a></li>
+                        </ul>
+                    </div>
+                <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
+                    <h5 class="-title"><a class="js-gps-track" data-gps-track="footer.click({ location: 3, link: 1 })" href="https://stackoverflow.com/company/about">Company</a></h5>
+                    <ul class="-list">
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 1 })" href="https://stackoverflow.com/company/about">About</a></li>
+                                                <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 27 })" href="https://stackoverflow.com/company/press">Press</a></li>
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 9 })" href="https://stackoverflow.com/company/work-here">Work Here</a></li>
+                        <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 7 })" href="https://stackoverflow.com/legal">Legal</a></li>
+                        <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 8 })" href="https://stackoverflow.com/legal/privacy-policy">Privacy Policy</a></li>
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link: 13 })" href="https://stackoverflow.com/company/contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="site-footer--col site-footer--categories-nav site-footer--col__visible">
+                    <a href="https://stackoverflow.com/questions/ask#" class="site-footer--back js-footer-back"><svg aria-hidden="true" class="svg-icon iconArrowLeftAlt" width="18" height="18" viewBox="0 0 18 18"><path d="M10.58 16L12 14.59 6.4 9 12 3.41 10.57 2l-7 7z"></path></svg></a>
+                    <div>
+                        <h5 class="-title"><a href="https://stackexchange.com/">Stack Exchange<br> Network</a></h5>
+                        <ul class="-list">
+                            <li class="-item"><a href="https://stackoverflow.com/questions/ask#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 3, link: 24 })" data-target="Technology">Technology</a></li>
+                            <li class="-item"><a href="https://stackoverflow.com/questions/ask#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 3, link: 24 })" data-target="Life / Arts">Life / Arts</a></li>
+                            <li class="-item"><a href="https://stackoverflow.com/questions/ask#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 3, link: 24 })" data-target="Culture / Recreation">Culture / Recreation</a></li>
+                            <li class="-item"><a href="https://stackoverflow.com/questions/ask#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 3, link: 24 })" data-target="Science">Science</a></li>
+                            <li class="-item"><a href="https://stackoverflow.com/questions/ask#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 3, link: 24 })" data-target="Other">Other</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="site-footer--categories">
+                    <div class="site-footer--col site-footer--category js-footer-col" data-name="Technology">
+        <ul class="-list">
+                <li class="-item"><a href="https://stackoverflow.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                <li class="-item"><a href="https://serverfault.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="system and network administrators">Server Fault</a></li>
+                <li class="-item"><a href="https://superuser.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="computer enthusiasts and power users">Super User</a></li>
+                <li class="-item"><a href="https://webapps.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="power users of web applications">Web Applications</a></li>
+                <li class="-item"><a href="https://askubuntu.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                <li class="-item"><a href="https://webmasters.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="pro webmasters">Webmasters</a></li>
+                <li class="-item"><a href="https://gamedev.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="professional and independent game developers">Game Development</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://tex.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                <li class="-item"><a href="https://softwareengineering.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="professionals, academics, and students working within the systems development life cycle">Software Engineering</a></li>
+                <li class="-item"><a href="https://unix.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                <li class="-item"><a href="https://apple.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                <li class="-item"><a href="https://wordpress.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="WordPress developers and administrators">WordPress Development</a></li>
+                <li class="-item"><a href="https://gis.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                <li class="-item"><a href="https://electronics.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://android.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                <li class="-item"><a href="https://security.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="information security professionals">Information Security</a></li>
+                <li class="-item"><a href="https://dba.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                <li class="-item"><a href="https://drupal.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="Drupal developers and administrators">Drupal Answers</a></li>
+                <li class="-item"><a href="https://sharepoint.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="SharePoint enthusiasts">SharePoint</a></li>
+                <li class="-item"><a href="https://ux.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="user experience researchers and experts">User Experience</a></li>
+                <li class="-item"><a href="https://mathematica.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="users of Wolfram Mathematica">Mathematica</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://salesforce.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                <li class="-item"><a href="https://expressionengine.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="administrators, end users, developers and designers for ExpressionEngine® CMS">ExpressionEngine® Answers</a></li>
+                <li class="-item"><a href="https://pt.stackoverflow.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="programadores profissionais e entusiastas">Stack Overflow em Português</a></li>
+                <li class="-item"><a href="https://blender.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="people who use Blender to create 3D graphics, animations, or games">Blender</a></li>
+                <li class="-item"><a href="https://networkengineering.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="network engineers">Network Engineering</a></li>
+                <li class="-item"><a href="https://crypto.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="software developers, mathematicians and others interested in cryptography">Cryptography</a></li>
+                <li class="-item"><a href="https://codereview.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="peer programmer code reviews">Code Review</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://magento.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="users of the Magento e-Commerce platform">Magento</a></li>
+                <li class="-item"><a href="https://softwarerecs.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="people seeking specific software recommendations">Software Recommendations</a></li>
+                <li class="-item"><a href="https://dsp.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="practitioners of the art and science of signal, image and video processing">Signal Processing</a></li>
+                <li class="-item"><a href="https://emacs.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="those using, extending or developing Emacs">Emacs</a></li>
+                <li class="-item"><a href="https://raspberrypi.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="users and developers of hardware and software for Raspberry Pi">Raspberry Pi</a></li>
+                <li class="-item"><a href="https://ru.stackoverflow.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="программистов">Stack Overflow на русском</a></li>
+                <li class="-item"><a href="https://codegolf.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="programming puzzle enthusiasts and code golfers">Programming Puzzles &amp; Code Golf</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://es.stackoverflow.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="programadores y profesionales de la informática">Stack Overflow en español</a></li>
+                <li class="-item"><a href="https://ethereum.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="users of Ethereum, the decentralized application platform and smart contract enabled blockchain">Ethereum</a></li>
+                <li class="-item"><a href="https://datascience.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="Data science professionals, Machine Learning specialists, and those interested in learning more about the field">Data Science</a></li>
+                <li class="-item"><a href="https://arduino.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="developers of open-source hardware and software that is compatible with Arduino">Arduino</a></li>
+                <li class="-item"><a href="https://bitcoin.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="Bitcoin crypto-currency enthusiasts">Bitcoin</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#technology" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 26 })">
+                        <strong>
+                            more (30)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="site-footer--col site-footer--category js-footer-col" data-name="Life / Arts">
+        <ul class="-list">
+                <li class="-item"><a href="https://photo.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                <li class="-item"><a href="https://scifi.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                <li class="-item"><a href="https://graphicdesign.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                <li class="-item"><a href="https://movies.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                <li class="-item"><a href="https://music.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="musicians, students, and enthusiasts">Music: Practice &amp; Theory</a></li>
+                <li class="-item"><a href="https://worldbuilding.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="writers/artists using science, geography and culture to construct imaginary worlds and settings">Worldbuilding</a></li>
+                <li class="-item"><a href="https://cooking.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Life / Arts"><ul class="-list">
+                <li class="-item"><a href="https://diy.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="contractors and serious DIYers">Home Improvement</a></li>
+                <li class="-item"><a href="https://money.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                <li class="-item"><a href="https://academia.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="academics and those enrolled in higher education">Academia</a></li>
+                <li class="-item"><a href="https://law.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="legal professionals, students, and others with experience or interest in law">Law</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#lifearts" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 26 })">
+                        <strong>
+                            more (15)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="site-footer--col site-footer--category js-footer-col" data-name="Culture / Recreation">
+        <ul class="-list">
+                <li class="-item"><a href="https://english.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                <li class="-item"><a href="https://skeptics.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="scientific skepticism">Skeptics</a></li>
+                <li class="-item"><a href="https://judaism.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                <li class="-item"><a href="https://travel.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="road warriors and seasoned travelers">Travel</a></li>
+                <li class="-item"><a href="https://christianity.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                <li class="-item"><a href="https://ell.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="speakers of other languages learning English">English Language Learners</a></li>
+                <li class="-item"><a href="https://japanese.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="students, teachers, and linguists wanting to discuss the finer points of the Japanese language">Japanese Language</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Culture / Recreation"><ul class="-list">
+                <li class="-item"><a href="https://gaming.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                <li class="-item"><a href="https://bicycles.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                <li class="-item"><a href="https://rpg.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                <li class="-item"><a href="https://anime.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="anime and manga fans">Anime &amp; Manga</a></li>
+                <li class="-item"><a href="https://puzzling.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="those who create, solve, and study puzzles">Puzzling</a></li>
+                <li class="-item"><a href="https://mechanics.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="mechanics and DIY enthusiast owners of cars, trucks, and motorcycles">Motor Vehicle Maintenance &amp; Repair</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#culturerecreation" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 26 })">
+                        <strong>
+                            more (33)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="site-footer--col site-footer--category js-footer-col" data-name="Science">
+        <ul class="-list">
+                <li class="-item"><a href="https://mathoverflow.net/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="professional mathematicians">MathOverflow</a></li>
+                <li class="-item"><a href="https://math.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                <li class="-item"><a href="https://stats.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                <li class="-item"><a href="https://cstheory.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                <li class="-item"><a href="https://physics.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="active researchers, academics and students of physics">Physics</a></li>
+                <li class="-item"><a href="https://chemistry.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="scientists, academics, teachers, and students in the field of chemistry">Chemistry</a></li>
+                <li class="-item"><a href="https://biology.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="biology researchers, academics, and students">Biology</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Science"><ul class="-list">
+                <li class="-item"><a href="https://cs.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="students, researchers and practitioners of computer science">Computer Science</a></li>
+                <li class="-item"><a href="https://philosophy.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="those interested in the study of the fundamental nature of knowledge, reality, and existence">Philosophy</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#science" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 26 })">
+                        <strong>
+                            more (10)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="site-footer--col site-footer--category js-footer-col" data-name="Other">
+        <ul class="-list">
+                <li class="-item"><a href="https://meta.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                <li class="-item"><a href="https://stackapps.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                <li class="-item"><a href="https://api.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="programmatic interaction with Stack Exchange sites">API</a></li>
+                <li class="-item"><a href="https://data.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="querying Stack Exchange data using SQL">Data</a></li>
+                <li class="-item"><a href="https://area51.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 4, link: 25 })" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                    </ul>
+    </div>
+                </div>
+            </nav>
+            <div class="site-footer--copyright fs-fine">
+                <ul class="-list">
+                    <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 3, link:4 })" href="https://stackoverflow.blog/?blb=1">Blog</a></li>
+                    <li class="-item"><a href="https://www.facebook.com/officialstackoverflow/" class="-link">Facebook</a></li>
+                    <li class="-item"><a href="https://twitter.com/stackoverflow" class="-link">Twitter</a></li>
+                    <li class="-item"><a href="https://linkedin.com/company/stack-overflow" class="-link">LinkedIn</a></li>
+                </ul>
+
+                <p class="mt-auto mb24">
+site design / logo © 2018 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a>
+                            with <a href="https://stackoverflow.blog/2009/06/25/attribution-required/" rel="license">attribution required</a>.
+                    <span id="svnrev">rev&nbsp;2018.7.19.31085</span>
+                </p>
+            </div>
+        </div>
+
+            </footer>
+            <script>StackExchange.ready(function () { StackExchange.responsiveness.addSwitcher(); })</script>
+    <noscript>
+        <div id="noscript-warning">Stack Overflow works best with JavaScript enabled
+            <img src="https://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno">
+        </div>
+    </noscript>
+
+<script>
+            (function(i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function() { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+            StackExchange.ready(function () {
+
+                StackExchange.ga.init({
+                    sendTitles: true,
+                    tracker: window.ga,
+                    trackingCodes: [
+                        'UA-108242619-1'
+                    ]
+                });
+
+                    StackExchange.ga.setDimension('dimension1', '8728882');
+
+                    StackExchange.ga.setDimension('dimension10', 'PassivelyLooking');
+
+
+                    StackExchange.ga.setDimension('dimension3', 'Questions/Ask');
+
+
+                StackExchange.ga.trackPageView();
+            });
+            
+/**/
+            
+            var _qevents = _qevents || [],
+            _comscore = _comscore || [];
+            (function() {
+                var ssl = 'https:' == document.location.protocol,
+                    s = document.getElementsByTagName('script')[0],
+                    qc = document.createElement('script');
+                 qc.async = true;
+                    qc.src = (ssl ? 'https://secure' : 'http://edge') + '.quantserve.com/quant.js';
+                    s.parentNode.insertBefore(qc, s);
+                    _qevents.push({ qacct: "p-c1rF4kxgLUzNc" });
+/**/
+                 var sc = document.createElement('script');
+                    sc.async = true;
+                    sc.src = (ssl ? 'https://sb' : 'http://b') + '.scorecardresearch.com/beacon.js';
+                    s.parentNode.insertBefore(sc, s);
+                    _comscore.push({ c1: "2", c2: "17440561" });
+            })();
+            
+
+</script>
+            
+    
+    
+</body></html>

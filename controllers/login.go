@@ -26,6 +26,6 @@ func(l Login) Post(w http.ResponseWriter, r *http.Request){
 		SessionInstance.Set(user.Username, userSession)
 		uid := http.Cookie{Name:"username", Value:user.Username, Expires:getCookieExpiration()}
 		http.SetCookie(w, &uid)
-	}
+	} 
 	http.Redirect(w, r, url, 302)
 }
