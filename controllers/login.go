@@ -22,8 +22,8 @@ func(l Login) Post(w http.ResponseWriter, r *http.Request){
 		url = "/login"
 	}else{
 		url = "/home"
-		userSession := sessions.Session{sessions.UserSession{user}}
-		SessionInstance.Set(user.Username, userSession)
+		s := sessions.UserSession{user.Username, user.Email, user.Password, nil}
+		SessionInstance.Set(s, user.Username)
 		uid := http.Cookie{Name:"username", Value:user.Username, Expires:getCookieExpiration()}
 		http.SetCookie(w, &uid)
 	} 

@@ -12,7 +12,7 @@
             <li><a href="/login">Log in</a></li>
         </ul>
         <div class="content">
-            <h1 style="color: white">Welcome, {{.SessionModel}}</h1>
+            <h1 style="color: white">Welcome, {{.Username}}</h1>
         </div>
         <script src="/assets/js/scripts.js"></script>
     </body>

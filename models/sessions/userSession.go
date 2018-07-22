@@ -1,5 +1,7 @@
 package sessions
-import "bridge/models"
 type UserSession struct {
-	models.User
+	Username string
+	Email string
+	Password string
+	Errors []error
 }

@@ -4,9 +4,6 @@ import (
     "bridge/utils"
     "encoding/json"
 )
-type Session struct { 
-    SessionModel
-}
 type SessionStore struct {
 	Client *redis.Client
 }
@@ -17,17 +14,18 @@ func NewMemoryStore() SessionStore {
 	utils.CheckErr("Error connecting to redis:", err)
 	return SessionStore{client}
 }
-func(r *SessionStore) Get(s Session, id string) (*Session, error){
+func(r *SessionStore) Get(id string) (UserSession, error){
+    var s UserSession
     bson, err := r.Client.Get(id).Bytes()
     if err != nil {
-        return &s, err
+        return s, err
     }
     if err := json.Unmarshal(bson, &s); err != nil {
-        return &s, err
+        return s, err
     }
-    return &s, nil
+    return s, nil
 }
-func(r *SessionStore) Set(id string, s Session) error {
+func(r *SessionStore) Set(s UserSession, id string) error {
     bson, err := json.Marshal(s)
     if err != nil {
         return err
@@ -36,7 +34,4 @@ func(r *SessionStore) Set(id string, s Session) error {
         return err
     }
     return nil
-}
-func(r *SessionStore) GetMap(s SessionModel) map[string]interface{} {
-     interface{}(s).(map[string]interface{})
 }
