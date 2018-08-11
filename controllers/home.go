@@ -1,21 +1,25 @@
 package controllers
 import (
 	"net/http"
-	"html/template"
+	"bridge/models"
+	"bridge/models/sessions"
 )
 type Home struct {
 	baseController
 }
-type PageData struct {
-	Data map[string]interface{}
+type homePageData struct {
+	Session sessions.UserSession
+	DB []models.Domain
 }
 func(h Home) Get(w http.ResponseWriter, r *http.Request){
-	t, _ := template.ParseFiles(viewDir + "home.gtpl")
-	cookie, _ := r.Cookie("username")
-	session, err := SessionInstance.Get(cookie.Value)
+	session, err := getSession(r)
 	if err != nil {
 		http.Redirect(w, r, "/login", 302)
 	}else{
-		t.Execute(w, session)
+		user := models.User{}
+		user.GetFromSession(session)
+		apps, _ := user.GetDomains()
+		page := homePageData{session, apps}
+		render(w, "home", page)
 	}
 }

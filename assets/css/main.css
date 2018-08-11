@@ -193,10 +193,25 @@ form input {
     vertical-align: top;
     padding: 2vh 3vw;
 }
-.content h2 {
-    font-weight: 300;
+.content h1 {
+    font-weight: 500;
 }
 .formimg {
     height: 33vh;
     position: relative;
+}
+.profile {
+    color: white;
+}
+.profile * {
+    margin-top: 0;
+    margin-bottom: 3vh !important;
+    position: relative;
+}
+.subtitle {
+    color: whitesmoke;
+    font-weight: 300;
+}
+.ibl {
+    display: inline-block;
 }

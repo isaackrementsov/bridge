@@ -1,12 +1,8 @@
 package controllers
-import (
-	"net/http"
-	"html/template"
-)
+import "net/http"
 type Index struct { 
 	baseController
 }
 func(i Index) Get(w http.ResponseWriter, r *http.Request){
-	t, _ := template.ParseFiles(viewDir + "index.gtpl")
-	t.Execute(w, nil)
+	render(w, "index", nil)
 }
