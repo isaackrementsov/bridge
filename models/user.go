@@ -42,7 +42,7 @@ func(u *User) GetDomains() ([]Domain, error){
 	notFound := domains.Find(bson.M{"Owner":u.Username}).All(&domainArr)
 	return domainArr, notFound
 }
-func(u *User) GetFromSession(s sessions.userSession){
+func(u *User) GetFromSession(s sessions.UserSession){
 	u.Username = s.Username
 	u.Password = s.Password
 	u.Email = s.Email

@@ -19,3 +19,12 @@ func(a *App) GetByName(n string) error {
 	notFound := apps.Find(bson.M{"Name":n}).One(&a)
 	return notFound
 }
+func GetApps() ([]App, error) {
+	connection, err := mgo.Dial("localhost:27017")
+	defer connection.Close()
+	utils.CheckErr("Error connecting to db: ", err)
+	apps := connection.DB("bridge").C("apps")
+	var appArr []App
+	notFound := apps.Find(bson.M{}).All(&appArr)
+	return appArr, notFound
+}

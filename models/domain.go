@@ -10,28 +10,27 @@ type Domain struct {
 	Owner string
 	Apps []App
 }
-func(d *Domain) GetByName(name string) error {
+func(d *Domain) Get(n string, o string) error {
 	connection, err := mgo.Dial("localhost:27017")
 	defer connection.Close()
 	utils.CheckErr("Error connecting to db: ", err)
 	domains := connection.DB("bridge").C("domains")
-	notFound := domains.Find(bson.M{"Name":name}).One(&d)
+	notFound := domains.Find(bson.M{"Name":n, "Owner":o}).One(&d)
 	return notFound
 }
 func(d *Domain) GetNewApp(a string) error {
 	connection, err := mgo.Dial("localhost:27017")
 	defer connection.Close()
 	utils.CheckErr("Error connecting to db: ", err)
-	apps := connection.DB("bridge").C("apps")
 	domains := connection.DB("bridge").C("domains")
 	err = apps.Update(bson.M{"Name":a}, bson.M{"$push":bson.M{"Domains":d.Name}})
 	utils.CheckErr("Error updating app: ", err)
 	app := App{}
-	notFound := apps.Find(bson.M{"Name":a}).One(&app)
-	err = domains.Update(bson.M{"$push":bson.M{"Apps":app}})
+	notFound := app.GetByName(a)
+	err = domains.Update(bson.M{"Name":d.Name, "Owner":d.Owner}, bson.M{"$push":bson.M{"Apps":app}})
 	utils.CheckErr("Error updating domain:", err)
 	if notFound == nil {
-		append(app, d.Apps)
+		d.Apps = append(d.Apps, app)
 	}
 	return notFound
 }
@@ -43,18 +42,23 @@ func(d *Domain) Save() error {
 	unique := isUnique("Name", d.Name, "domains", d)
 	if unique {
 		err = domains.Insert(d)
-		utils := utils.CheckErr("Domain insert:", err)
+		utils.CheckErr("Domain insert:", err)
 		return nil
 	}else{
 		return errors.New("Domain name is not unique")
 	}	
 }
-func(d *Domain) GetApps() ([]App, error){
+func(d *Domain) ChangeAppSettings(n string, m map[string]interface{}){
 	connection, err := mgo.Dial("localhost:27017")
 	defer connection.Close()
 	utils.CheckErr("Error connecting to db: ", err)
-	apps := connection.DB("bridge").C("apps")
-	var appArr []App
-	notFound := apps.Find(bson.M{"domains":d}).All(&appArr)
-	return appArr, notFound
+	domains := connection.DB("bridge").C("domains")
+	app := d.Apps[Name == n]
+	for key in m {
+		if app.Settings[key] != nil {
+			app.Settings[key] = m[key]
+		}
+	}
+	err = domains.Update(bson.M{"Name":d.Name, "Owner":d.Owner}, json.Unmarshal(app.(bson.M)))
+	utils.CheckErr("Error updating domain: ", err)
 }
